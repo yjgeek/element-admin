@@ -69,11 +69,6 @@ module.exports = {
         },
       ],
     },
-    router: {
-      when: 'isNotTest',
-      type: 'confirm',
-      message: 'Install vue-router?',
-    },
     lint: {
       when: 'isNotTest',
       type: 'confirm',
@@ -168,8 +163,7 @@ module.exports = {
     'test/unit/karma.conf.js': "unit && runner === 'karma'",
     'test/unit/specs/index.js': "unit && runner === 'karma'",
     'test/unit/setup.js': "unit && runner === 'jest'",
-    'test/e2e/**/*': 'e2e',
-    'src/router/**/*': 'router',
+    'test/e2e/**/*': 'e2e'
   },
   complete: function(data, { chalk }) {
     const green = chalk.green
