@@ -4,7 +4,7 @@
     <div class="right">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
-          {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人信息</el-dropdown-item>
@@ -21,7 +21,7 @@ export default {
   data () {
     return {
       isShowSide: false,
-      name: '管理员'
+      userName: '管理员'
     }
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
     }
   },
   created(){
-    this.name = this.getLocalStorage('user', true).name;
+    this.userName = this.getLocalStorage('user', true).name;
   }
 };
 </script>
