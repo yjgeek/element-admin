@@ -25,12 +25,18 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.17.1",
+    "element-ui": "^2.0.9",
+    "lodash": "^4.17.10",
     "vue": "^2.5.2"{{#router}},
-    "vue-router": "^3.0.1"{{/router}}
+    "vue-router": "^3.0.1"{{/router}},
+    "vuex": "^3.0.1",
   },
   "devDependencies": {
+    "sass-loader": "^6.0.6",
+    "node-sass": "^4.9.0",
     {{#lint}}
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^7.2.3",
     "eslint": "^4.15.0",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
