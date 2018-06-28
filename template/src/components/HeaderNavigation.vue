@@ -4,7 +4,7 @@
     <div class="right">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
-          {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
+          管理员<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人信息</el-dropdown-item>
