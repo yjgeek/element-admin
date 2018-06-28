@@ -8,23 +8,21 @@
         <el-main :class="['main', !isCollapse?'show':'hide']">
           <el-breadcrumb separator="/">
             <template v-for="(item, i) in breadData">
-              <el-breadcrumb-item v-if="item=='首页'" to="/"  :key="i">{{item}}</el-breadcrumb-item>
-              <el-breadcrumb-item v-else-if="isObject(item)" :key="i"><span @click="$router.push(item.url)">{{item.text}}</span></el-breadcrumb-item>
-              <el-breadcrumb-item v-else :key="i">{{item}}</el-breadcrumb-item>
+              <el-breadcrumb-item v-if="item=='首页'" to="/"  :key="i"></el-breadcrumb-item>
+              <el-breadcrumb-item v-else-if="isObject(item)" :key="i"><span @click="$router.push(item.url)"></span></el-breadcrumb-item>
+              <el-breadcrumb-item v-else :key="i"></el-breadcrumb-item>
             </template>
           </el-breadcrumb>
           <router-view />
         </el-main>
       </el-container>
     </el-container>
-    <resource-dialog v-model="resourceDialogVisible"></resource-dialog>
   </div>
 </template>
 
 <script>
 import sideNavigation from 'components/SideNavigation'
 import headerNavigation from 'components/HeaderNavigation'
-import ResourceDialog from "views/resources/ResourceDialog";
 export default {
   name: 'app',
   data () {
@@ -37,8 +35,7 @@ export default {
   },
   components: {
     sideNavigation,
-    headerNavigation,
-    ResourceDialog
+    headerNavigation
   },
   methods: {
     breadCrumb: function() {
@@ -97,9 +94,6 @@ export default {
   mounted(){
     GLOBAL.vbus.$on('collapseLeftNav', val=>{
       this.isCollapse = val;
-    });
-    GLOBAL.vbus.$on('openResourceDialog', val=>{
-      this.resourceDialogVisible = true;
     });
   },
   created () {

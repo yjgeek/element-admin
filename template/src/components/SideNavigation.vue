@@ -71,32 +71,33 @@ export default {
     });
   },
   created(){
-    let datas = JSON.parse(JSON.stringify(this.$store.state.sideNav.datas));
-    let apis = this.filterApi(datas);
-    this.$api["publicHandlePermissions"]({ data: apis }).then(res=>{
-      Vue.prototype.auth = Object.keys(res);
-      datas.forEach((item, i)=>{
-        if (item.childs) {
-          let tempArray = [];
-          item.childs.forEach(child=>{
-            if (child.api) {
-              if (res[child.api] == true) {
-                tempArray.push(child);
-              }
-            }else{
-              tempArray.push(child);
-            }
-          })
-          item.childs = tempArray;
-        }
-        if (item.api) {
-          if (!res[item.api]) {
-            datas.splice(i,1)
-          }
-        }
-      })
-      this.$store.commit('sideNav/sidebarData', datas)
-    })
+    // 处理菜单权限的
+    // let datas = JSON.parse(JSON.stringify(this.$store.state.sideNav.datas));
+    // let apis = this.filterApi(datas);
+    // this.$api["publicHandlePermissions"]({ data: apis }).then(res=>{
+    //   Vue.prototype.auth = Object.keys(res);
+    //   datas.forEach((item, i)=>{
+    //     if (item.childs) {
+    //       let tempArray = [];
+    //       item.childs.forEach(child=>{
+    //         if (child.api) {
+    //           if (res[child.api] == true) {
+    //             tempArray.push(child);
+    //           }
+    //         }else{
+    //           tempArray.push(child);
+    //         }
+    //       })
+    //       item.childs = tempArray;
+    //     }
+    //     if (item.api) {
+    //       if (!res[item.api]) {
+    //         datas.splice(i,1)
+    //       }
+    //     }
+    //   })
+    //   this.$store.commit('sideNav/sidebarData', datas)
+    // })
   }
 }
 </script>

@@ -1,5 +1,5 @@
 export default {
-  // path: 'user',
+  path: 'user',
   // component: '',
   // meta: {
   //   bread: ['用户管理']

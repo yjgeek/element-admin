@@ -2,10 +2,9 @@
   <el-header :class="['header-navigation', isShowSide?'hide':'show']">
     <div class="logo" @click="collapse"><icon :type="isShowSide?'fold-right':'fold-left'"></icon></div>
     <div class="right">
-      <el-button type="text" title="资源列表" @click="openResourceDialog"><icon type="resource"></icon></el-button>
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
-          {{name}}<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人信息</el-dropdown-item>
@@ -22,25 +21,19 @@ export default {
   data () {
     return {
       isShowSide: false,
-      name: ''
+      name: '管理员'
     }
   },
   methods: {
     logout () {
-      this.$api['authLogout']().then(res=>{
-        localStorage.clear();
-        this.$router.push('/login');
-      })
+      localStorage.clear();
+      this.$router.push('/login');
     },
     //隐藏/显示左侧导航
     collapse(){
       // 通过全局的vbus来分发事件
       this.isShowSide = !this.isShowSide;
       GLOBAL.vbus.$emit('collapseLeftNav', this.isShowSide); 
-    },
-    openResourceDialog(){
-      // 通过全局的vbus来分发事件
-      GLOBAL.vbus.$emit('openResourceDialog'); 
     }
   },
   created(){
