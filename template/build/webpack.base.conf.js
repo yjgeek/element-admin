@@ -44,7 +44,7 @@ module.exports = {
       'config': resolve('src/config'),
       'plugins': resolve('src/plugins'),
       'routers': resolve('src/routers'),
-      'views': resolve('src/views'),
+      'views': resolve('src/views')
     }
   },
   module: {

@@ -30,7 +30,7 @@
     "lodash": "^4.17.10",
     "vue": "^2.5.2"{{#router}},
     "vue-router": "^3.0.1"{{/router}},
-    "vuex": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "sass-loader": "^6.0.6",
