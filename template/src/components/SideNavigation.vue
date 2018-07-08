@@ -2,7 +2,7 @@
   <el-aside :class="['side-nav', !isCollapse?'show':'hide']">
     <div class="logo" @click="$router.push('/')"> 
       <img src="https://cn.vuejs.org/images/logo.png" alt="">
-      {{  {{!isCollapse?'后台管理系统':''}} }}
+      \{{!isCollapse?'后台管理系统':''}}
     </div>
     <el-menu
       :default-active="$route.path"
@@ -20,16 +20,16 @@
           :index="String(item.index)">
           <template slot="title">
             <icon :type="item.icon"></icon>
-            <span>{{ {{item.text}} }}</span>
+            <span>\{{item.text}}</span>
           </template>
           <el-menu-item v-for="(child, i) in item.childs" :key="i" :index="child.path">
             <icon :type="child.icon"></icon>
-            <span>{{ {{item.text}} }}</span>
+            <span>\{{item.text}}</span>
           </el-menu-item>
         </el-submenu>
         <el-menu-item v-else :key="i" :index="item.path">
             <icon :type="item.icon"></icon>
-            <span>{{ {{item.text}} }}</span>
+            <span>\{{item.text}}</span>
         </el-menu-item>
       </template>
     </el-menu>
