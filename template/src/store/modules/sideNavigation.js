@@ -25,7 +25,7 @@ export default {
           tempArray.push(item);
         }
       });
-      return handleNav(tempArray);
+      return tempArray;
     }
   },
   mutations: {
@@ -34,14 +34,4 @@ export default {
     }
   },
   actions: {}
-}
-// 遍历菜单数据，赋值唯一的index
-function handleNav(data, index) {
-  data.forEach((item, i) => {
-    item['index'] = index ? `${index}-${i+1}`:i+1;
-    if (item.childs) {
-      handleNav(item.childs, item['index']);
-    }
-  });
-  return data;
 }

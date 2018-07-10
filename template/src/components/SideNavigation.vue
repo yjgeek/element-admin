@@ -1,23 +1,11 @@
 <template>
   <el-aside :class="['side-nav', !isCollapse?'show':'hide']">
-    <div class="logo" @click="$router.push('/')"> 
-      <img src="https://cn.vuejs.org/images/logo.png" alt="">
-      \{{!isCollapse?'后台管理系统':''}}
+    <div class="logo" @click="$router.push('/')">
+      <img src="https://cn.vuejs.org/images/logo.png" alt=""> \{{!isCollapse?'后台管理系统':''}}
     </div>
-    <el-menu
-      :default-active="$route.path"
-      :uniqueOpened="true"
-      :router="true"
-      :collapse="isCollapse"
-      class="el-menu-vertical"
-      background-color="#001529"
-      text-color="#fff"
-      active-text-color="#1890ff">
+    <el-menu :default-active="$route.path" :uniqueOpened="true" :router="true" :collapse="isCollapse" class="el-menu-vertical" background-color="#001529" text-color="#fff" active-text-color="#1890ff">
       <template v-for="(item, i) in sidebarData">
-        <el-submenu 
-          :key="i"
-          v-if="item.childs"
-          :index="String(item.index)">
+        <el-submenu :key="i" v-if="item.childs" :index="String(item.index)">
           <template slot="title">
             <icon :type="item.icon"></icon>
             <span>\{{item.text}}</span>
@@ -28,8 +16,8 @@
           </el-menu-item>
         </el-submenu>
         <el-menu-item v-else :key="i" :index="item.path">
-            <icon :type="item.icon"></icon>
-            <span>\{{item.text}}</span>
+          <icon :type="item.icon"></icon>
+          <span>\{{item.text}}</span>
         </el-menu-item>
       </template>
     </el-menu>
@@ -46,7 +34,7 @@ export default {
   },
   computed: {
     sidebarData () {
-      return this.$store.getters['sideNav/sidebarFilter']
+      return this.handleNavIndex(this.$store.getters['sideNav/sidebarFilter']);
     }
   },
   methods: {
@@ -64,6 +52,18 @@ export default {
       });
       return tempArray
     },
+    /**
+     * 赋值一个唯一的key
+     */
+    handleNavIndex(data, index) {
+      data.forEach((item, i) => {
+        item['index'] = index ? `${index}-${i + 1}` : i + 1;
+        if (item.childs) {
+          this.handleNavIndex(item.childs, item['index']);
+        }
+      });
+      return data;
+    }
   },
   mounted(){
     GLOBAL.vbus.$on('collapseLeftNav', val=>{
