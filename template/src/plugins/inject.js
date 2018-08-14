@@ -1,5 +1,7 @@
 import api from "./api";
+import * as config from "config/index";
 import mixin from "./mixin";
+import directive from './directive';
 export default {
   install: (Vue)=>{
     document.title = config.TITLE;
