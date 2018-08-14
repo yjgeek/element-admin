@@ -238,9 +238,3 @@ setLocalStorage('key', data) //会把Array，Object 转换成String
 ```
 
 其他的应该没有什么了，大家可以自行扩展吧~~~
-
-最后在分享一篇文章[https://juejin.im/post/5b29c3bde51d45588d4d7110](https://juejin.im/post/5b29c3bde51d45588d4d7110)我就是看了这篇文章整出上面那个的，以后会慢慢的去完善它，比如加[mock](http://mockjs.com/)等等。
-
-
-排版有点乱，将就下
-逃~~~~~~
