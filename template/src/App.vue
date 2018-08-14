@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <router-view v-if="!auth" />
+    <router-view v-if="!isAuth" />
     <el-container v-else>
       <header-navigation></header-navigation>
       <el-container>
         <side-navigation></side-navigation>
-        <el-main :class="['main', !isCollapse?'show':'hide']">
+        <el-main :class="['main', !isCollapse?'show-main':'hide-main']">
           <el-breadcrumb separator="/">
             <template v-for="(item, i) in breadData">
-              <el-breadcrumb-item v-if="item=='首页'" to="/"  :key="i"></el-breadcrumb-item>
-              <el-breadcrumb-item v-else-if="isObject(item)" :key="i"><span @click="$router.push(item.url)"></span></el-breadcrumb-item>
-              <el-breadcrumb-item v-else :key="i"></el-breadcrumb-item>
+              <el-breadcrumb-item v-if="item=='首页'" to="/"  :key="i">\{{item}}</el-breadcrumb-item>
+              <el-breadcrumb-item v-else-if="isObject(item)" :key="i"><span class="breadcrumb-a" @click="$router.push({name:item.url})">{{item.text}}</span></el-breadcrumb-item>
+              <el-breadcrumb-item v-else :key="i">\{{item}}</el-breadcrumb-item>
             </template>
           </el-breadcrumb>
           <router-view />
@@ -23,48 +23,26 @@
 <script>
 import sideNavigation from 'components/SideNavigation'
 import headerNavigation from 'components/HeaderNavigation'
+import {debounce} from 'lodash'
+import {analysisStr} from 'utils/index'
 export default {
   name: 'app',
   data () {
     return {
-      auth: false,
+      isAuth: false,
       isCollapse: false,
-      resourceDialogVisible: false,
       breadData: []
     }
   },
-  components: {
-    sideNavigation,
-    headerNavigation
-  },
   methods: {
     breadCrumb: function() {
-      if (!this.auth) return false;
+      if (!this.isAuth) return false;
       let breadData = [];
-      let params = this.$route.query; //获取参数
+      let params = Object.assign({},this.$route.query,this.$route.params); //获取参数
       for (let obj of this.$route.matched) {
         if (obj.meta.bread) {
-          for (let value of obj.meta.bread) {
-            // 判断是否有需要解析变量
-            let type = null;
-            if (typeof value == 'object') {
-              value = JSON.stringify(value);
-              type = 'object';
-            }
-            if (value.includes("#{")) {
-              value = value.replace(/#{(.+?)}/g, function(a, key) {
-                if (params[key]) {
-                  return params[key];
-                } else {
-                  return "";
-                }
-              });
-            }
-            if (type == 'object') {
-              value = JSON.parse(value);
-            }
-            breadData.push(value);
-          }
+          let data = analysisStr(obj.meta.bread, params);
+          breadData = [...breadData, ...data];
         }
       }
       this.breadData = breadData;
@@ -79,17 +57,24 @@ export default {
     handleRouter(){
       let $route = this.$route;
       if(($route.fullPath == '/' && !$route.name) || $route.meta.auth===false){
-        this.auth = false;
+        this.isAuth = false;
       }else{
-        this.auth = true;
+        this.isAuth = true;
         this.breadCrumb();
       }
     }
   },
   watch:{
-    '$route'(to, from){
-      this.handleRouter()
+    $route:{
+      handler(to, from){
+        this.handleRouter()
+      },
+      immediate: true
     }
+  },
+  components: {
+    sideNavigation,
+    headerNavigation
   },
   mounted(){
     GLOBAL.vbus.$on('collapseLeftNav', val=>{
@@ -114,6 +99,10 @@ body, html, ul, p{
 }
 ul{
   list-style: none;
+}
+a{
+  text-decoration: none;
+  color: #606266;
 }
 .el-input__icon, .icon{
   font-style: normal;
@@ -159,16 +148,25 @@ ul{
   border-radius: 4px;
   transition: all .2s ease-in-out;
 }
+body .el-table th.gutter {
+  display: table-cell!important;
+}
 </style>
 <style lang="scss" scoped>
 .main{
   padding: 0;
   padding: 70px 10px 0 265px; 
-  &.hide{
+  &.hide-main{
     padding-left: 73px; 
   }
   .el-breadcrumb{
     margin-bottom: 30px;
+    .breadcrumb-a{
+      cursor: pointer;
+      &:hover{
+        color: #1890ff;
+      }
+    }
   }
 }
 </style>

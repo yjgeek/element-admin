@@ -1,105 +1,89 @@
 <template>
-  <el-aside :class="['side-nav', !isCollapse?'show':'hide']">
-    <div class="logo" @click="$router.push('/')"> 
-      <img src="https://cn.vuejs.org/images/logo.png" alt="">
-      {{!isCollapse?'后台管理系统':''}}
+  <el-aside :class="['side-nav', !isCollapse?'show-side':'hide-side']">
+    <div class="logo" @click="$router.push('/')">
+      <img src="https://cn.vuejs.org/images/logo.png" alt=""> \{{!isCollapse?$config.TITLE:''}}
     </div>
-    <el-menu
-      :default-active="$route.path"
-      :uniqueOpened="true"
-      :router="true"
-      :collapse="isCollapse"
-      class="el-menu-vertical"
-      background-color="#001529"
-      text-color="#fff"
-      active-text-color="#1890ff">
+    <el-menu :default-active="$route.path" :uniqueOpened="true" :router="true" :collapse="isCollapse" class="el-menu-vertical" background-color="#001529" text-color="#fff" active-text-color="#1890ff">
       <template v-for="(item, i) in sidebarData">
-        <el-submenu 
-          :key="i"
-          v-if="item.childs"
-          :index="String(item.index)">
+        <el-submenu :key="i" v-if="item.childs" :index="String(item.index)">
           <template slot="title">
             <icon :type="item.icon"></icon>
-            <span>{{item.text}}</span>
+            <span>\{{item.text}}</span>
           </template>
           <el-menu-item v-for="(child, i) in item.childs" :key="i" :index="child.path">
             <icon :type="child.icon"></icon>
-            <span>{{child.text}}</span>
+            <span>\{{child.text}}</span>
           </el-menu-item>
         </el-submenu>
         <el-menu-item v-else :key="i" :index="item.path">
-            <icon :type="item.icon"></icon>
-            <span>{{item.text}}</span>
+          <icon :type="item.icon"></icon>
+          <span>\{{item.text}}</span>
         </el-menu-item>
       </template>
     </el-menu>
   </el-aside>
 </template>
 <script>
-import Vue from 'vue';
+import {cloneDeep} from 'lodash';
 export default {
-  name: 'side-navigation',
-  data () {
+  name: "side-navigation",
+  data() {
     return {
       isCollapse: false
-    }
+    };
   },
   computed: {
-    sidebarData () {
-      return this.$store.getters['sideNav/sidebarFilter']
+    sidebarData() {
+      return this.handleNavIndex(this.$store.getters['sideNav/sidebarFilter']);
     }
   },
   methods: {
-    //遍历出api
-    filterApi (datas) {
-      let tempArray = []
-      datas.forEach(item => {
-        if (typeof item.childs === 'object') {
-          tempArray = [...tempArray, ...this.filterApi(item.childs)]; 
-        }else{
-          if (item.api) {
-            tempArray.push(item.api)
-          }
+    /**
+     * 赋值一个唯一的key
+     */
+    handleNavIndex(data, index) {
+      data.forEach((item, i) => {
+        item['index'] = index ? `${index}-${i + 1}` : i + 1;
+        if (item.childs) {
+          this.handleNavIndex(item.childs, item['index']);
         }
       });
-      return tempArray
+      return data;
     },
   },
-  mounted(){
-    GLOBAL.vbus.$on('collapseLeftNav', val=>{
+  mounted() {
+    GLOBAL.vbus.$on("collapseLeftNav", val => {
       this.isCollapse = val;
     });
   },
-  created(){
-    // 处理菜单权限的
-    // let datas = JSON.parse(JSON.stringify(this.$store.state.sideNav.datas));
-    // let apis = this.filterApi(datas);
-    // this.$api["publicHandlePermissions"]({ data: apis }).then(res=>{
-    //   Vue.prototype.auth = Object.keys(res);
-    //   datas.forEach((item, i)=>{
-    //     if (item.childs) {
-    //       let tempArray = [];
-    //       item.childs.forEach(child=>{
-    //         if (child.api) {
-    //           if (res[child.api] == true) {
-    //             tempArray.push(child);
-    //           }
-    //         }else{
-    //           tempArray.push(child);
-    //         }
-    //       })
-    //       item.childs = tempArray;
-    //     }
-    //     if (item.api) {
-    //       if (!res[item.api]) {
-    //         datas.splice(i,1)
-    //       }
-    //     }
-    //   })
-    //   this.$store.commit('sideNav/sidebarData', datas)
-    // })
+  created() {
+    // 下面是处理是否有权限查看，仅供参考
+    return  false;
+    let datas = cloneDeep(this.$store.state.sideNav.datas);
+    let auth = this.auth; //登录的时候已经获取到了权限列表 目前最多2级
+    datas.forEach((item, i) => {
+      if (item.childs) {
+        let tempArray = [];
+        item.childs.forEach(child => {
+          if (child.api){
+            if (auth.includes(child.api)) {
+              tempArray.push(child);
+            }
+          } else {
+            tempArray.push(child);
+          }
+        });
+        item.childs = tempArray;
+      }
+      if (item.api) {
+        if (!auth.includes(item.api)) {
+          datas.splice(i, 1);
+        }
+      }
+    });
+    this.$store.commit("sideNav/sidebarData", datas);
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .side-nav{
@@ -114,13 +98,16 @@ export default {
   padding-top: 60px;
   box-sizing: border-box;
   transition: width .4s;
-  &.hide{
+  &.hide-side{
     width: 63px !important;
     i{
       font-weight: bold;
     }
     .logo{
-      width: 63px !important;
+      width: 63px !important; 
+      img{
+        width: 40px;
+      }
     }
   }
   .logo{
@@ -140,8 +127,9 @@ export default {
     position: fixed;
     top: 0;
     left: 0; 
+    overflow: hidden;
     img{
-      width: 35px;
+      width: 40px;
       vertical-align: middle;
     }
   }

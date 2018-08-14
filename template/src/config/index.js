@@ -1,11 +1,18 @@
 import menu from "./menu";
 
-//api接口的前缀
-export const API_PREFIX = 'http://127.0.0.1:4001/api'
+// 网站标题
+export const TITLE = "后台管理系统"
+
+//Api 图片接口的前缀
+let apiPrefix = 'http://0.0.0.0:8008/api' //线上APi接口
+if (process.env.NODE_ENV=='development') {
+  apiPrefix = 'http://127.0.0.1:4001/api' //本地APi接口
+}
+export const API_PREFIX = apiPrefix;
 
 // axios 默认的配置
 export const AXIOS_DEFAULT_CONFIG = {
-  timeout: 2000,
+  timeout: 6000,
   maxContentLength: 2000,
   headers: {},
   withCredentials: true,

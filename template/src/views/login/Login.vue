@@ -1,36 +1,29 @@
 <template>
-  <div class="login-register">
-    <div class="form" ref="aa">
+  <div class="login">
+    <div class="form">
       <div class="title">登&nbsp;&nbsp;&nbsp;&nbsp;录</div>
       <div class="content iconfont">
-        <div class="login">
-          <el-input placeholder="请输入用户名" @keyup.enter.native="onLogin" prefix-icon="icon-phone" v-model="login.account">
-          </el-input>
-          <p></p>
-          <el-input placeholder="请输入密码" @keyup.enter.native="onLogin" type="password" prefix-icon="icon-pwd" v-model="login.password">
-          </el-input>
-          <p></p>
-          <div class="code">
-            <el-input placeholder="请输入验证码" @keyup.enter.native="onLogin" v-model="login.code">
-            </el-input>
-            <img :src="codeSrc" @click="getCode()" alt="点击获取">
-          </div>
-          <p></p>
-          <el-row style="text-align: center">
-            <el-button type="danger" @click="login.account='';login.password=''">重置</el-button>
-            <el-button type="primary" @click="onLogin">登录</el-button>
-          </el-row>
+        <div><el-input placeholder="请输入用户名" @keyup.enter.native="onLogin" prefix-icon="icon-phone" v-model="login.account"></el-input></div>
+        <div><el-input placeholder="请输入密码" @keyup.enter.native="onLogin" type="password"  v-model="login.password"></el-input></div>
+        <div class="code">
+          <el-input placeholder="请输入验证码" @keyup.enter.native="onLogin" v-model="login.code"></el-input>
+          <img :src="codeSrc" @click="getCode()" alt="点击获取">
         </div>
+        <el-row style="text-align: center">
+          <el-button type="danger" @click="login.account='';login.password=''">重置</el-button>
+          <el-button type="primary" :loading="isSubmit" @click="onLogin">登录</el-button>
+        </el-row>
       </div>  
     </div>
   </div>
 </template>
-
 <script>
+import Vue from 'vue';
 export default {
   data(){
     return {
       codeSrc: '',
+      isSubmit: false,
       login: {
         account: '',
         password: '',
@@ -40,12 +33,28 @@ export default {
   },
   methods:{
     onLogin(){
+      this.isSubmit = true;
       this.$api["authLogin"](this.login).then(res=>{
         this.setLocalStorage('user', res);
-        this.$router.push('/welcome');
+        this.getPermissionList(); //登录之后的权限处理
       }).catch(e=>{
         this.getCode();
+        this.isSubmit = false;
       })
+    },
+    //获取权限列表
+    getPermissionList(){
+      let auth = [];
+      this.$api['authPermissionList']().then(res=>{
+        Object.keys(res).forEach(key=>{
+          if (res[key]==1) {
+            auth.push(key);
+          }
+        });
+        this.$router.push('/welcome');
+        this.setLocalStorage('auth', auth);
+        Vue.prototype.auth = auth;
+      });
     },
     getCode(){
       this.$api["authVerificationCode"]().then(res=>{
@@ -60,8 +69,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login-register{
-  background: url('/static/img/bg1.jpg');
+.login{
+  background: url('/static/img/login/bg2.jpg');
   background-size: 100% 100%;
   position: fixed;
   width: 100%;
@@ -72,26 +81,34 @@ export default {
     margin: 15px 0;
   }
   .form{
-    position: fixed;
-    width: 35%;
-    max-width: 450px;
-    min-width: 400px;
-    height: 550px;
-    background: rgba(rgb(173, 209, 231), 0.4);
-    right: 20px;
-    top: 0;
+    right: 0;
+    top: 50%;
+    left: 0;
     bottom: 0;
     margin: auto;
     border-radius: 2px;
+    width: 30%;
+    min-width: 350px;
+    max-width: 420px;
+    position: absolute;
+    height: 300px;
+    margin-top: -150px;
+    background: rgba(0, 0, 0, .5);
+    padding: 5px;
+    border-radius: 5px;
     .title{
-      color: #fff;
+      color: #E3E1E2;
       text-align: center;
-      font-size: 30px;
+      font-size: 35px;
       height: 50px;
       font-family: '微软雅黑';
       line-height: 50px;
-      
-      
+      text-shadow: 0 1px 1px rgba(255,255,255,1),
+               0 -1px 1px rgba(0,0,0,.8);
+      user-select: none;
+    }
+    .content>div{
+      margin-bottom: 15px;
     }
     .code{
       display: flex;
