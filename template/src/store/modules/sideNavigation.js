@@ -22,17 +22,9 @@ export default {
           } else {
             tempArray.push(item);
           }
-<<<<<<< HEAD
         });
         return tempArray;
       }
-=======
-        } else {
-          tempArray.push(item);
-        }
-      });
-      return tempArray;
->>>>>>> 627912eb37fbec673df5bf84acd5429caf49dba4
     }
   },
   mutations: {

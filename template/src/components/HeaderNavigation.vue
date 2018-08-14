@@ -4,11 +4,7 @@
     <div class="right">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
-<<<<<<< HEAD
           \{{name}}<i class="el-icon-arrow-down el-icon--right"></i>
-=======
-          \{{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
->>>>>>> 627912eb37fbec673df5bf84acd5429caf49dba4
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人信息</el-dropdown-item>

@@ -1,13 +1,7 @@
 <template>
-<<<<<<< HEAD
   <el-aside :class="['side-nav', !isCollapse?'show-side':'hide-side']">
     <div class="logo" @click="$router.push('/')">
       <img src="https://cn.vuejs.org/images/logo.png" alt=""> \{{!isCollapse?$config.TITLE:''}}
-=======
-  <el-aside :class="['side-nav', !isCollapse?'show':'hide']">
-    <div class="logo" @click="$router.push('/')">
-      <img src="https://cn.vuejs.org/images/logo.png" alt=""> \{{!isCollapse?'后台管理系统':''}}
->>>>>>> 627912eb37fbec673df5bf84acd5429caf49dba4
     </div>
     <el-menu :default-active="$route.path" :uniqueOpened="true" :router="true" :collapse="isCollapse" class="el-menu-vertical" background-color="#001529" text-color="#fff" active-text-color="#1890ff">
       <template v-for="(item, i) in sidebarData">
@@ -18,11 +12,7 @@
           </template>
           <el-menu-item v-for="(child, i) in item.childs" :key="i" :index="child.path">
             <icon :type="child.icon"></icon>
-<<<<<<< HEAD
             <span>\{{child.text}}</span>
-=======
-            <span>\{{item.text}}</span>
->>>>>>> 627912eb37fbec673df5bf84acd5429caf49dba4
           </el-menu-item>
         </el-submenu>
         <el-menu-item v-else :key="i" :index="item.path">
@@ -43,11 +33,7 @@ export default {
     };
   },
   computed: {
-<<<<<<< HEAD
     sidebarData() {
-=======
-    sidebarData () {
->>>>>>> 627912eb37fbec673df5bf84acd5429caf49dba4
       return this.handleNavIndex(this.$store.getters['sideNav/sidebarFilter']);
     }
   },
@@ -64,18 +50,6 @@ export default {
       });
       return data;
     },
-    /**
-     * 赋值一个唯一的key
-     */
-    handleNavIndex(data, index) {
-      data.forEach((item, i) => {
-        item['index'] = index ? `${index}-${i + 1}` : i + 1;
-        if (item.childs) {
-          this.handleNavIndex(item.childs, item['index']);
-        }
-      });
-      return data;
-    }
   },
   mounted() {
     GLOBAL.vbus.$on("collapseLeftNav", val => {
