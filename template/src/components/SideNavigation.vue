@@ -60,7 +60,7 @@ export default {
     // 下面是处理是否有权限查看，仅供参考
     return  false;
     let datas = cloneDeep(this.$store.state.sideNav.datas);
-    let auth = this.auth; //登录的时候已经获取到了权限列表 目前最多2级
+    let auth = this.$auth; //登录的时候已经获取到了权限列表 目前最多2级
     datas.forEach((item, i) => {
       if (item.childs) {
         let tempArray = [];

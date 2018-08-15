@@ -1,5 +1,6 @@
 import Icon from "components/IconFont";
 import StrongDialog from "components/strongDialog";
+import StrongList from "components/strongList";
 export default {
   computed:{
     windowSize(){
@@ -55,6 +56,7 @@ export default {
   },
   components: {
     Icon,
-    StrongDialog
+    StrongDialog,
+    StrongList
   }
 }

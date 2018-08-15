@@ -9,7 +9,7 @@ export default {
             }
             for (let item of data.values()) {
                 let val = '/api/admin/' + item;
-                if (GLOBAL.vm.auth.includes(val)) {
+                if (GLOBAL.vm.$auth.includes(val)) {
                     bool = false;
                     break;
                 }
