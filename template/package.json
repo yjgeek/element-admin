@@ -31,7 +31,7 @@
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vue-directive-image-previewer": "^2.2.1",
+    "vue-directive-image-previewer": "^2.2.1"
   },
   "devDependencies": {
     "sass-loader": "^6.0.6",
