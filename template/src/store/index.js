@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import SideNav from './modules/sideNavigation'
+import SideNav from './module/sideNavigation'
 Vue.use(Vuex)
 
 export default new Vuex.Store({

@@ -30,11 +30,13 @@
     "lodash": "^4.17.10",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vue-directive-image-previewer": "^2.2.1",
   },
   "devDependencies": {
     "sass-loader": "^6.0.6",
     "node-sass": "^4.9.0",
+    "sass-resources-loader": "^1.3.4",
     {{#lint}}
     "babel-eslint": "^7.2.3",
     "eslint": "^4.15.0",

@@ -1,5 +1,5 @@
 <template>
-  <el-header :class="['header-navigation', isShowSide?'hide-nav':'show']">
+  <el-header :class="['header-navigation', isShowSide?'hide-nav':'show-nav']">
     <div class="logo" @click="collapse"><icon :type="isShowSide?'fold-right':'fold-left'"></icon></div>
     <div class="right">
       <el-dropdown trigger="click">
@@ -7,8 +7,7 @@
           \{{name}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人信息</el-dropdown-item>
-          <el-dropdown-item>修改密码</el-dropdown-item>
+          <el-dropdown-item><router-link to="/">修改密码</router-link></el-dropdown-item>
           <el-dropdown-item divided ><p @click="logout">退出登录</p></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -22,7 +21,7 @@ export default {
   data () {
     return {
       isShowSide: false,
-      name: '超级管理员'
+      name: ''
     }
   },
   methods: {
@@ -66,7 +65,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .el-header.header-navigation {
-  background: #fff;
+  background: #082b4c;
   position: fixed;
   display: flex;
   justify-content: space-between;
@@ -85,15 +84,15 @@ export default {
     padding: 0 15px;
     cursor: pointer;
     &:hover {
-      background: #dff8f5;
+      background: #063767;
     }
     i {
       font-size: 26px;
-      color: #000;
+      color: #fff;
     }
   }
   .el-dropdown-link {
-    color: #000;
+    color: #fff;
     cursor: pointer;
   }
   .right {

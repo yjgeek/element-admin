@@ -10,12 +10,12 @@
             <icon :type="item.icon"></icon>
             <span>\{{item.text}}</span>
           </template>
-          <el-menu-item v-for="(child, i) in item.childs" :key="i" :index="child.path">
+          <el-menu-item v-for="(child, i) in item.childs" :key="i" :route="child.route" :index="child.path">
             <icon :type="child.icon"></icon>
             <span>\{{child.text}}</span>
           </el-menu-item>
         </el-submenu>
-        <el-menu-item v-else :key="i" :index="item.path">
+        <el-menu-item :route="item.route" v-else :key="i" :index="item.path">
           <icon :type="item.icon"></icon>
           <span>\{{item.text}}</span>
         </el-menu-item>
@@ -44,9 +44,7 @@ export default {
     handleNavIndex(data, index) {
       data.forEach((item, i) => {
         item['index'] = index ? `${index}-${i + 1}` : i + 1;
-        if (item.childs) {
-          this.handleNavIndex(item.childs, item['index']);
-        }
+        if (item.childs)  this.handleNavIndex(item.childs, item['index']);
       });
       return data;
     },
@@ -57,14 +55,14 @@ export default {
     });
   },
   created() {
-    // 下面是处理是否有权限查看，仅供参考
-    return  false;
     let datas = cloneDeep(this.$store.state.sideNav.datas);
-    let auth = this.$auth; //登录的时候已经获取到了权限列表 目前最多2级
+    let auth = this.auth;
+    let isAdmin = this.getLocalStorage('user', true).isAdmin;
     datas.forEach((item, i) => {
       if (item.childs) {
         let tempArray = [];
         item.childs.forEach(child => {
+          //如果没有api则不验证
           if (child.api){
             if (auth.includes(child.api)) {
               tempArray.push(child);

@@ -9,10 +9,8 @@ export default {
   getters: {
     sidebarFilter(state) {
       let datas;
-      if (AUTH_DEBUG) { 
-        return state.sidebarData;
-      } else {
-        datas = state.datas;
+      if (AUTH_DEBUG) {
+        datas = state.sidebarData;
         let tempArray = [];
         datas.forEach((item, i) => {
           if (item.childs) {
@@ -24,6 +22,8 @@ export default {
           }
         });
         return tempArray;
+      } else {
+        return state.datas;
       }
     }
   },

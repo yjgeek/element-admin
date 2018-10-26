@@ -36,7 +36,7 @@ export default {
       this.isSubmit = true;
       this.$api["authLogin"](this.login).then(res=>{
         this.setLocalStorage('user', res);
-        this.getPermissionList(); //登录之后的权限处理
+        this.getPermissionList();
       }).catch(e=>{
         this.getCode();
         this.isSubmit = false;
@@ -46,14 +46,9 @@ export default {
     getPermissionList(){
       let auth = [];
       this.$api['authPermissionList']().then(res=>{
-        Object.keys(res).forEach(key=>{
-          if (res[key]==1) {
-            auth.push(key);
-          }
-        });
         this.$router.push('/welcome');
-        this.setLocalStorage('auth', auth);
-        Vue.prototype.auth = auth;
+        this.setLocalStorage('auth', res);
+        Vue.prototype.auth = res;
       });
     },
     getCode(){

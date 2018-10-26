@@ -1,7 +1,5 @@
 import axios from './axios'
-import _pick from 'lodash/pick'
-import _assign from 'lodash/assign'
-import _isEmpty from 'lodash/isEmpty'
+import { pick, assign, isEmpty} from 'lodash'
 import { API_DEFAULT_CONFIG } from 'config/index'
 import API_CONFIG from '../service/api'
 
@@ -50,11 +48,9 @@ class MakeApi {
 
       Object.defineProperty(this.api, apiname, {
         value(outerParams, outerOptions) {
-
-          // 请求参数自动截取。
-          // 请求参数不穿则发送默认配置参数。
-          let _data = _isEmpty(outerParams) ? params : _pick(_assign({}, params, outerParams), Object.keys(params))
-          return axios(_normoalize(_assign({
+          // 请求参数自动截取, 请求参数不传则发送默认配置参数。
+          let _data = isEmpty(outerParams) ? params : pick(assign({}, params, outerParams), Object.keys(params))
+          return axios(_normoalize(assign({
             url,
             desc,
             baseURL,
@@ -68,6 +64,7 @@ class MakeApi {
 
 function _normoalize(options, data) {
   // 这里可以做大小写转换，也可以做其他类型 RESTFUl 的兼容
+  options.method = options.method ? options.method.toUpperCase() : 'GET'; 
   if (options.method === 'POST') {
     options.data = data
   } else if (options.method === 'GET') {
