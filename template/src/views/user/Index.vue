@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column prop="roles" label="所属角色">
           <template slot-scope="scope">
-            <el-tag size="mini" v-for="item in scope.row.roles" :key="item.id">{{item.name}}</el-tag>
+            <el-tag size="mini" v-for="item in scope.row.roles" :key="item.id">\{{item.name}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="organization.name" label="所属机构">
@@ -41,12 +41,12 @@
         <el-table-column prop="status_name" label="状态">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.status" @change="changeStatus(scope.row)" active-color="#13ce66" inactive-color="#ff4949">
-            </el-switch>&nbsp; {{ scope.row.status?'正常':'拉黑' }}
+            </el-switch>&nbsp; \{{ scope.row.status?'正常':'拉黑' }}
           </template>
         </el-table-column>
         <el-table-column prop="created_at" label="创建时间">
         </el-table-column>
-        <el-table-column label="操作" width="350" v-if="checkAuth(['user/update','user/delete','user/resetPwd','rbac/assignRole'])" :fixed="windowSize>768?'right':false">
+        <el-table-column label="操作" width="350" :fixed="windowSize>768?'right':false">
           <template slot-scope="scope">
             <el-button size="mini" v-auth="'user/update'" type="primary" @click="$router.push({name: 'userEdit', params: {id: scope.row.id}})">编辑</el-button>
             <el-button size="mini" type="danger" v-auth="'user/delete'" @click="deleteUser(scope.row.id)">删除</el-button>
@@ -101,9 +101,6 @@ export default {
     updateData() {
       this.$refs["strongList"].updateData();
     }
-  },
-  created(){
-    console.log(this.$route)
   },
 };
 </script>
