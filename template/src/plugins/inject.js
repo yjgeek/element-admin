@@ -9,7 +9,7 @@ export default {
   install: (Vue)=>{
     document.title = config.TITLE;
     Vue.prototype.$config = config;
-    Vue.prototype.auth = localStorage.auth ? JSON.parse(localStorage.auth):[];
+    Vue.prototype.$auth = localStorage.auth ? JSON.parse(localStorage.auth):[];
     Vue.prototype.$api = api;
 
     //注册一个图片放大插件 https://www.npmjs.com/package/vue-directive-image-previewer
