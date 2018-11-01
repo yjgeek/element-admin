@@ -1,18 +1,27 @@
 <template>
-    <h1>欢迎来到后台管理系统!!!</h1>
+  <div class="index">
+    <p>Welcome to YjGeek backstage management System </p>
+  </div>
 </template>
+
 <script>
 export default {
-  data(){
-      return {}
-  }
-}
-</script>
-<style lang="scss" scoped>
-    h1{
-        text-align: center;
-        margin-top: 30vh;
-        font-size: 30px;
-        color: #ccc;
+  name: 'welcome',
+  data() {
+    return {
     }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+  .index{
+    >p{
+      font-size: 80px;
+      text-align: center;
+      color: #ddd;
+      margin: 100px;
+      user-select: none;
+    }
+  }
 </style>

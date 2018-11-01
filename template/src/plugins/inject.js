@@ -2,7 +2,7 @@ import api from "./api";
 import * as config from "config/index";
 import mixin from "./mixin";
 import directive from './directive';
-
+import 'service/mock'
 import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
 export default {

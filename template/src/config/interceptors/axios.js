@@ -1,8 +1,9 @@
 import { Message } from "element-ui";
-import { API_PREFIX } from "config/index";
+import { API_PREFIX, API_DEFAULT_CONFIG } from "config/index";
 
 export function requestSuccessFunc(requestObj) {
-  requestObj.url = API_PREFIX + requestObj.url
+  let api = API_DEFAULT_CONFIG.mock ? API_DEFAULT_CONFIG.mockBaseURL+requestObj.url : API_PREFIX + requestObj.url;
+  requestObj.url = api;
   return requestObj;
 }
 //请求错误 比如断网
@@ -23,14 +24,9 @@ export function responseSuccessFunc(responseObj) {
       return Promise.reject(data);
     default:
       let status = responseObj.config._code; //特殊code需要下发到业务方,就不用弹框提示
-      if (responseObj.config.data) { //处理post请求方式的参数
-        let data = JSON.parse(responseObj.config.data);
-        status = data._code;
-      }
-      if (status && status instanceof Array) {
-        if (status.includes(code)) {
-          return Promise.reject(data);
-        }
+      if (status) {
+        if (!(status instanceof Array)) status = [status];
+        if (status.includes(code)) return Promise.reject(data);
       }
       Message.error(data.message);
       return Promise.reject(data);
