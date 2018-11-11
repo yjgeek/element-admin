@@ -7,24 +7,24 @@
 <script>
 import layouts from 'layouts/index'
 export default {
-    name: "app",
-    data() {
-        return {
-            currentLayout: null
-        };
-    },
-    watch: {
-        $route: {
-            handler() {
-                let $route = this.$route;
-                let layout =  $route.meta.layout || 'general';
-                this.currentLayout = layouts[`${layout}-layout`];
-                GLOBAL.vbus.$emit("updateRouter", $route);
-            },
-            immediate: true
-        }
+  name: 'app',
+  data () {
+    return {
+      currentLayout: null
     }
-};
+  },
+  watch: {
+    $route: {
+      handler () {
+        let $route = this.$route
+        let layout = $route.meta.layout || 'general'
+        this.currentLayout = layouts[`${layout}-layout`]
+        global.vbus.$emit('updateRouter', $route)
+      },
+      immediate: true
+    }
+  }
+}
 </script>
 
 <style lang="scss">

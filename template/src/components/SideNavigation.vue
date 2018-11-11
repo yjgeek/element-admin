@@ -24,64 +24,63 @@
   </el-aside>
 </template>
 <script>
-import {cloneDeep} from 'lodash';
+import {cloneDeep} from 'lodash'
 export default {
-  name: "side-navigation",
-  data() {
+  name: 'side-navigation',
+  data () {
     return {
       isCollapse: false
-    };
+    }
   },
   computed: {
-    sidebarData() {
-      return this.handleNavIndex(this.$store.getters['sideNav/sidebarFilter']);
+    sidebarData () {
+      return this.handleNavIndex(this.$store.getters['sideNav/sidebarFilter'])
     }
   },
   methods: {
     /**
      * 赋值一个唯一的key
      */
-    handleNavIndex(data, index) {
+    handleNavIndex (data, index) {
       data.forEach((item, i) => {
-        item['index'] = index ? `${index}-${i + 1}` : i + 1;
-        if (item.childs)  this.handleNavIndex(item.childs, item['index']);
-      });
-      return data;
-    },
+        item['index'] = index ? `${index}-${i + 1}` : i + 1
+        if (item.childs) this.handleNavIndex(item.childs, item['index'])
+      })
+      return data
+    }
   },
-  mounted() {
-    GLOBAL.vbus.$on("collapseLeftNav", val => {
-      this.isCollapse = val;
-    });
+  mounted () {
+    global.vbus.$on('collapseLeftNav', val => {
+      this.isCollapse = val
+    })
   },
-  created() {
-    let datas = cloneDeep(this.$store.state.sideNav.datas);
-    let auth = this.auth;
-    let isAdmin = this.getLocalStorage('user', true).isAdmin;
+  created () {
+    let datas = cloneDeep(this.$store.state.sideNav.datas)
+    let auth = this.auth
     datas.forEach((item, i) => {
       if (item.childs) {
-        let tempArray = [];
+        let tempArray = []
         item.childs.forEach(child => {
-          //如果没有api则不验证
-          if (child.api){
+          // 如果没有api则不验证
+          if (child.api) {
             if (auth.includes(child.api)) {
-              tempArray.push(child);
+              tempArray.push(child)
             }
           } else {
-            tempArray.push(child);
+            tempArray.push(child)
           }
-        });
-        item.childs = tempArray;
+        })
+        item.childs = tempArray
       }
       if (item.api) {
         if (!auth.includes(item.api)) {
-          datas.splice(i, 1);
+          datas.splice(i, 1)
         }
       }
-    });
-    this.$store.commit("sideNav/sidebarData", datas);
+    })
+    this.$store.commit('sideNav/sidebarData', datas)
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .side-nav{
@@ -102,7 +101,7 @@ export default {
       font-weight: bold;
     }
     .logo{
-      width: 63px !important; 
+      width: 63px !important;
       img{
         width: 40px;
       }
@@ -124,7 +123,7 @@ export default {
     display: inline-block;
     position: fixed;
     top: 0;
-    left: 0; 
+    left: 0;
     overflow: hidden;
     img{
       width: 40px;

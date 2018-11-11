@@ -17,24 +17,24 @@ export default {
     value: Boolean,
     operating: {
       type: Boolean,
-      default(){
-        return true;
+      default () {
+        return true
       }
     }
   },
-  data(){
+  data () {
     return {
       visible: this.value,
-      dialogParams:{
-        title: '添加数据',
-      },
+      dialogParams: {
+        title: '添加数据'
+      }
     }
   },
-  watch:{
-    visible(val){
+  watch: {
+    visible (val) {
       this.$emit('input', val)
-    },
-  },
+    }
+  }
 }
 </script>
 

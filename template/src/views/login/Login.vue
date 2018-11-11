@@ -13,14 +13,14 @@
           <el-button type="danger" @click="login.account='';login.password=''">重置</el-button>
           <el-button type="primary" :loading="isSubmit" @click="onLogin">登录</el-button>
         </el-row>
-      </div>  
+      </div>
     </div>
   </div>
 </template>
 <script>
-import Vue from 'vue';
+import Vue from 'vue'
 export default {
-  data(){
+  data () {
     return {
       codeSrc: '',
       isSubmit: false,
@@ -31,33 +31,32 @@ export default {
       }
     }
   },
-  methods:{
-    onLogin(){
-      this.isSubmit = true;
-      this.$api["authLogin"](this.login).then(res=>{
-        this.setLocalStorage('user', res);
-        this.getPermissionList();
-      }).catch(e=>{
-        this.getCode();
-        this.isSubmit = false;
+  methods: {
+    onLogin () {
+      this.isSubmit = true
+      this.$api['authLogin'](this.login).then(res => {
+        this.setLocalStorage('user', res)
+        this.getPermissionList()
+      }).catch(e => {
+        this.getCode()
+        this.isSubmit = false
       })
     },
-    //获取权限列表
-    getPermissionList(){
-      let auth = [];
-      this.$api['authPermissionList']().then(res=>{
-        this.$router.push('/welcome');
-        this.setLocalStorage('auth', res);
-        Vue.prototype.auth = res;
-      });
+    // 获取权限列表
+    getPermissionList () {
+      this.$api['authPermissionList']().then(res => {
+        this.$router.push('/welcome')
+        this.setLocalStorage('auth', res)
+        Vue.prototype.auth = res
+      })
     },
-    getCode(){
-      this.$api["authVerificationCode"]().then(res=>{
-        this.codeSrc = res;
+    getCode () {
+      this.$api['authVerificationCode']().then(res => {
+        this.codeSrc = res
       })
     }
   },
-  created(){
+  created () {
     this.getCode()
   }
 }

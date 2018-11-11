@@ -23,81 +23,81 @@
   </div>
 </template>
 <script>
-import { cloneDeep } from "lodash";
+import { cloneDeep } from 'lodash'
 export default {
-    name: "strong-list",
-    props: {
-        filter: {
-            type: Object,
-            default() {
-                return {
-                  page: 1,
-                  limit: 15,
-                };
-            }
-        },
-        getData: {
-            type: Function
-        },
-        isPage: {
-            type: Boolean,
-            default() {
-                return true;
-            }
-        }
-    },
-    data() {
+  name: 'strong-list',
+  props: {
+    filter: {
+      type: Object,
+      default () {
         return {
-          total: 0,
-          listData: [],
-          response: {},
-          loading: false,
-          initFilterParams: cloneDeep(this.filter)
-        };
-    },
-    methods: {
-        updateData() {
-            let params = this.filter;
-            if (this.getData) {
-                this.loading = true;
-                this.getData(params, res => {
-                    this.response = res;
-                    if (this.isPage) {
-                        params.page = res.current_page;
-                        this.total = res.total;
-                        this.listData = res.data;
-                    } else {
-                        this.listData = res;
-                    }
-                    this.loading = false;
-                });
-            }
-        },
-        // 筛选
-        handleFilter(e) {
-            this.updateData();
-        },
-
-        // 分页改变
-        handlePage(page) {
-            this.filter.page = page;
-            this.updateData();
-        },
-
-        // 重置筛选内容
-        resetFilter() {
-            let { filter, initFilterParams} = this;
-            Object.keys(filter).forEach(key => {
-              filter[key] = initFilterParams[key];
-            });
-            this.updateData();
-            this.$emit('resetFilter')
+          page: 1,
+          limit: 15
         }
+      }
     },
-    created() {
-        this.updateData();
+    getData: {
+      type: Function
+    },
+    isPage: {
+      type: Boolean,
+      default () {
+        return true
+      }
     }
-};
+  },
+  data () {
+    return {
+      total: 0,
+      listData: [],
+      response: {},
+      loading: false,
+      initFilterParams: cloneDeep(this.filter)
+    }
+  },
+  methods: {
+    updateData () {
+      let params = this.filter
+      if (this.getData) {
+        this.loading = true
+        this.getData(params, res => {
+          this.response = res
+          if (this.isPage) {
+            params.page = res.current_page
+            this.total = res.total
+            this.listData = res.data
+          } else {
+            this.listData = res
+          }
+          this.loading = false
+        })
+      }
+    },
+    // 筛选
+    handleFilter (e) {
+      this.updateData()
+    },
+
+    // 分页改变
+    handlePage (page) {
+      this.filter.page = page
+      this.updateData()
+    },
+
+    // 重置筛选内容
+    resetFilter () {
+      let {filter, initFilterParams} = this
+      Object.keys(filter).forEach(key => {
+        filter[key] = initFilterParams[key]
+      })
+      this.updateData()
+      this.$emit('resetFilter')
+    }
+  },
+  created () {
+    this.updateData()
+  }
+}
 </script>
 
 <style lang="scss" scoped>

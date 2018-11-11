@@ -23,7 +23,7 @@ export default [{
   path: '/admin/auth/logout',
   mockPath: '',
   params: {}
-},{
+}, {
   name: 'permissionList',
   method: 'GET',
   desc: '获取权限',

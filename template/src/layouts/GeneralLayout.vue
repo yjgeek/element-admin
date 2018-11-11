@@ -14,25 +14,25 @@
 </template>
 
 <script>
-import sideNavigation from "components/SideNavigation";
-import headerNavigation from "components/HeaderNavigation";
+import sideNavigation from 'components/SideNavigation'
+import headerNavigation from 'components/HeaderNavigation'
 export default {
-    name: "general-layout",
-    data() {
-        return {
-            isCollapse: false
-        };
-    },
-    components: {
-        sideNavigation,
-        headerNavigation
-    },
-    mounted() {
-        GLOBAL.vbus.$on("collapseLeftNav", val => {
-            this.isCollapse = val;
-        });
+  name: 'general-layout',
+  data () {
+    return {
+      isCollapse: false
     }
-};
+  },
+  components: {
+    sideNavigation,
+    headerNavigation
+  },
+  mounted () {
+    global.vbus.$on('collapseLeftNav', val => {
+      this.isCollapse = val
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

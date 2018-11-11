@@ -9,12 +9,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 
 Vue.use(ElementUI)
-Vue.use(inject);
+Vue.use(inject)
 
 Vue.config.productionTip = false
-window.GLOBAL = {};
-GLOBAL.vbus = new Vue();
-GLOBAL.vm = new Vue({
+window.global = {}
+global.vbus = new Vue()
+global.vm = new Vue({
   el: '#app',
   router,
   store,

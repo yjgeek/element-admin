@@ -1,4 +1,3 @@
-
 ## 首先通过```vue-cli```来下载模板
 ```JavaScript
 //安装全局的vue-cli
@@ -42,6 +41,9 @@ $ vue init yuanjie007/element-admin TestDemo(项目名字)
 │  │  └─api----------------------------------------所有的api接口配置
 │  │    └─module----------------------------------------api模块，index会自动遍历这个文件夹所有文件
 │  │      index.js----------------------------------------api文件的入口文件
+│  │  └─mock----------------------------------------mock(模拟接口数据)
+│  │    └─module----------------------------------------mock模块，index会自动遍历这个文件夹所有文件
+│  │      index.js----------------------------------------mock文件的入口文件
 │  ├─store-----------------------------------------存放vuex的模块文件
 │  ├─utils------------------------------------------存放一些公共的工具
 │  └─views-----------------------------------------存放的页面文件
@@ -68,7 +70,9 @@ export default [{
 }]
 ```
 ### API请求(service/api)
-用的是axios库，[点击查看文档](https://www.kancloud.cn/yunye/axios/234845)
+>如果要切换成真正的接口请在```config/index.js```下的```AXIOS_DEFAULT_CONFIG:{mock: false}```默认开发环境是用mock来搞的，生产环境默认真实地址
+
+接口请求的库是axios，[点击查看文档](https://www.kancloud.cn/yunye/axios/234845)
 在```config/interceptors/axios```里面可以配置一些拦截，比如请求成功、请求错误、响应成功、响应错误等等。
 我们可以在响应成功的时候处理一些特殊的状态码，比如未登录(401)，没有这个接口(404)等等。
 ```js
@@ -93,20 +97,13 @@ export function responseSuccessFunc(responseObj){
       return Promise.reject(data);
       break;
     default:
-      //通过传特殊的参数_code,可以把特殊的状态码下发到业务那里，_code必须是数组，如果没有传则弹框提示！
-      let status = responseObj.config._code;
-      if (responseObj.config.data) { //处理post请求方式的参数
-        let data = JSON.parse(responseObj.config.data);
-        status = data._code;
+      let status = responseObj.config._code; //特殊code需要下发到业务方,就不用弹框提示
+      if (status) {
+        if (!(status instanceof Array)) status = [status];
+        if (status.includes(code)) return Promise.reject(data);
       }
-      if (status && status instanceof Array) {
-        if (status.includes(code)) {
-          return Promise.reject(data);
-        }
-      }
-      message.error(data.message);
+      Message.error(data.message);
       return Promise.reject(data);
-      break;
   }
 }
 ```
@@ -159,6 +156,16 @@ import Vue from 'vue'
 import inject from 'plugins/inject'
 Vue.use(inject)
 ```
+#### Mock
+&nbsp;&nbsp;模拟接口数据，在```service/mock/```目录下,详细的语法规范请移步到mock的官方文档查看[Mock文档](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)
+
+我在```service/mock/util.js```文件里添加了几个工具方法:
+
+| 名称 | 描述 | 返回值 | 默认值 |
+| ------ | ------ | ------ | ------ |
+| Mock   | Mock的实例方法 | 具体的详细方法请移步官方文档 | - |
+| resSend | 正常响应接口的数据 |{code: 200, data: 任何类型, message: ''} | {code: 200, data: null, message: 'success'}|
+| resSendList | 响应列表的接口数据(包含分页) | {current_page: 1,from: 1,last_page: 1,per_page: 15,to: 3,total: 15,data: [{}]} 如果你真正的接口不是这些，可以改成你们的，这里只是做一个演示 | {current_page: 1,from: 1,last_page: 1,per_page: 15,to: 3,total: 15,data: [{}]} |
 
 ### 路由(router)
 路由也可以和api接口一样划分模块，里面的配置都是和[vue-router](https://router.vuejs.org/zh/)一样的。比如要搞一个用户管理(user)
@@ -174,7 +181,7 @@ export default {
     auth： false,  //校验 默认为true，为false这不用校验
     bread: ['用户管理'] //生成面包屑导航 =>  首页 / 用户管理
   },
-  children: [{  //子路由
+  children: [{	//子路由
     path: '',
     name: 'user', 
     meta: {
@@ -220,7 +227,7 @@ export function beforeEach(to, from, next) {
 这些都是在```plugins/inject.js```里面注入的
 ```
 $config //在config/index 里面的配置
-$api  //api的请求方法 详细请见上面的 API请求(service/api)
+$api 	//api的请求方法 详细请见上面的 API请求(service/api)
 $auth   //权限列表 是在登录之后请求回来的权限列表，详见views/login/Login.vue下的getPermissionList方法 有保存到localStorage
 ```
 <font color="#f54228">获取上面的属性如 配置(\$config): this.$config 就好了</font>
@@ -249,5 +256,11 @@ setLocalStorage('key', data) //会把Array，Object 转换成String
   //如果有权限就会显示，没有就会把他移除。注意api一定要''用单引号括起来
   <el-button type="primary" v-auth="'user/add'">添加用户</el-button>
 ```
-如果有不懂的地方可以在我的博客的这篇文章下留言喔: 
-[袁杰的博客-基于Vue+Element中后台管理模板框架](http://www.yjgeek.com/article/2018-07-08/%E5%9F%BA%E4%BA%8EVue+Element%E4%B8%AD%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E6%A8%A1%E6%9D%BF%E6%A1%86%E6%9E%B6)
+
+其他的应该没有什么了，大家可以自行扩展吧~~~
+
+最后在分享一篇文章[https://juejin.im/post/5b29c3bde51d45588d4d7110](https://juejin.im/post/5b29c3bde51d45588d4d7110)我就是看了这篇文章以后，然后根据自身的一些经验搞出来的，肯定会有很多的不足，我会去慢慢的完善它，比如加[mock](http://mockjs.com/)等等。
+
+
+排版有点乱，将就下
+逃~~~~~~

@@ -1,18 +1,18 @@
-import api from "./api";
-import * as config from "config/index";
-import mixin from "./mixin";
-import directive from './directive';
+import api from './api'
+import * as config from 'config/index'
+import mixin from './mixin'
+import directive from './directive'
 import 'service/mock'
 import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
 export default {
-  install: (Vue)=>{
-    document.title = config.TITLE;
-    Vue.prototype.$config = config;
-    Vue.prototype.$auth = localStorage.auth ? JSON.parse(localStorage.auth):[];
-    Vue.prototype.$api = api;
+  install: (Vue) => {
+    document.title = config.TITLE
+    Vue.prototype.$config = config
+    Vue.prototype.$auth = localStorage.auth ? JSON.parse(localStorage.auth) : []
+    Vue.prototype.$api = api
 
-    //注册一个图片放大插件 https://www.npmjs.com/package/vue-directive-image-previewer
+    // 注册一个图片放大插件 https://www.npmjs.com/package/vue-directive-image-previewer
     // # 使用方法
     // < img v-image-preview />
     // or
@@ -22,12 +22,12 @@ export default {
     Vue.use(VueDirectiveImagePreviewer, {
       zIndex: 99999999
     })
-    
+
     // 3. 注入组件
     Vue.mixin(mixin)
     // 注册一个全局自定义指令 `v-auth`
-    Object.keys(directive).forEach(key=>{
-      Vue.directive(key, directive[key]);
+    Object.keys(directive).forEach(key => {
+      Vue.directive(key, directive[key])
     })
   }
 }

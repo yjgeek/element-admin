@@ -36,7 +36,7 @@ export default [{
     password: '',
     organization_path: '',
     confirm_pw: '',
-    status: '',
+    status: ''
   }
 }, {
   name: 'update',

@@ -15,7 +15,7 @@
   </el-header>
 </template>
 <script>
-import { debounce } from "lodash";
+import { debounce } from 'lodash'
 export default {
   name: 'header-navigation',
   data () {
@@ -26,42 +26,41 @@ export default {
   },
   methods: {
     logout () {
-      this.$api['authLogout']().then(res=>{
-        localStorage.clear();
-        this.$router.push('/login');
+      this.$api['authLogout']().then(res => {
+        localStorage.clear()
+        this.$router.push('/login')
       })
     },
-    //隐藏/显示左侧导航
-    collapse(){
+    // 隐藏/显示左侧导航
+    collapse () {
       // 通过全局的vbus来分发事件
-      this.isShowSide = !this.isShowSide;
-      GLOBAL.vbus.$emit('collapseLeftNav', this.isShowSide); 
+      this.isShowSide = !this.isShowSide
+      global.vbus.$emit('collapseLeftNav', this.isShowSide)
     },
     /**
      * 窗口改变大小
      */
-    changeWindow() {
-      let isShowSide = this.isShowSide;
+    changeWindow () {
       this.$store.commit('updateWindowSize', window.innerWidth)
       if (window.innerWidth > 991) {
-        this.isShowSide = false;
-        GLOBAL.vbus.$emit("collapseLeftNav", false);
+        this.isShowSide = false
+        global.vbus.$emit('collapseLeftNav', false)
       } else {
-        this.isShowSide = true;
-        GLOBAL.vbus.$emit("collapseLeftNav", true);
+        this.isShowSide = true
+        global.vbus.$emit('collapseLeftNav', true)
       }
     }
   },
-  mounted() {
-    window.onresize = debounce(this.changeWindow, 300, { maxWait: 600 });
-    this.$nextTick(()=>{
+  mounted () {
+    window.onresize = debounce(this.changeWindow, 300, { maxWait: 600 })
+    this.$nextTick(() => {
       this.changeWindow()
     })
   },
-  created(){
-    this.name = this.getLocalStorage('user', true).name;
+  created () {
+    this.name = this.getLocalStorage('user', true).name
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .el-header.header-navigation {

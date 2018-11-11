@@ -7,11 +7,11 @@
 <script>
 export default {
   name: 'index',
-  data() {
+  data () {
     return {
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

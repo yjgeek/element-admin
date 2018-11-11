@@ -1,10 +1,10 @@
 const data = require.context('./', true, /\.vue$/)
-let obj = {};
+let obj = {}
 data.keys().forEach(item => {
-  item = data(item).default;
-  let prefix = item.name;
+  item = data(item).default
+  let prefix = item.name
   if (item) {
-    obj[prefix] = item;
+    obj[prefix] = item
   }
 })
-export default obj;
+export default obj

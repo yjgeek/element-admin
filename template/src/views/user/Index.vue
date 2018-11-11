@@ -60,49 +60,49 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       filterParams: {
-        name: "",
+        name: '',
         phone: null,
         status: null,
         create_time: []
       }
-    };
-  },
-  methods: {
-    getData(params = {}, callback) {
-      this.$api["userIndex"](params).then(res => {
-        res.data = res.data.map(item => {
-          item.status = item.status == 1 ? true : false;
-          return item;
-        });
-        callback && callback(res);
-      });
-    },
-    deleteUser(id) {
-      this.$api["userDelete"]({ id }).then(res => {
-        this.$message.success("删除成功!");
-        this.$refs["strongList"].updateData();
-      });
-    },
-    // 更改用户状态
-    changeStatus(item) {
-      this.$api["userUpdateStatus"]({
-        id: item.id,
-        status: item.status ? 1 : 0
-      });
-    },
-    resetPwd(id){
-      this.$api["userResetPwd"]({id}).then(res=>{
-        this.$message.success("重置成功,密码为123456");
-      });
-    },
-    updateData() {
-      this.$refs["strongList"].updateData();
     }
   },
-};
+  methods: {
+    getData (params = {}, callback) {
+      this.$api['userIndex'](params).then(res => {
+        res.data = res.data.map(item => {
+          // item.status = item.status === 1 ? true : false
+          return item
+        })
+        callback && callback(res)
+      })
+    },
+    deleteUser (id) {
+      this.$api['userDelete']({ id }).then(res => {
+        this.$message.success('删除成功!')
+        this.$refs['strongList'].updateData()
+      })
+    },
+    // 更改用户状态
+    changeStatus (item) {
+      this.$api['userUpdateStatus']({
+        id: item.id,
+        status: item.status ? 1 : 0
+      })
+    },
+    resetPwd (id) {
+      this.$api['userResetPwd']({id}).then(res => {
+        this.$message.success('重置成功,密码为123456')
+      })
+    },
+    updateData () {
+      this.$refs['strongList'].updateData()
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 </style>

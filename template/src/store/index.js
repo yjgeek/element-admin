@@ -4,12 +4,12 @@ import SideNav from './module/sideNavigation'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state:{
+  state: {
     windowSize: 0
   },
-  mutations:{
-    updateWindowSize(state,data){
-      state.windowSize = data;
+  mutations: {
+    updateWindowSize (state, data) {
+      state.windowSize = data
     }
   },
   modules: {
