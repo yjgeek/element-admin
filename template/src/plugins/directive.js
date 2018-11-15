@@ -11,7 +11,7 @@ export default {
       }
       for (let item of data.values()) {
         let val = '/api/admin/' + item
-        if (global.vm.$auth.includes(val)) {
+        if (window.$variable.vm.$auth.includes(val)) {
           bool = false
           break
         }

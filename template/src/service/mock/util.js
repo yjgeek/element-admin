@@ -1,4 +1,5 @@
 export const Mock = require('mockjs')
+// Mock.XHR.prototype.withCredentials = true //如果需要cookie的话，加上这句
 Mock.setup({
   timeout: '200-1000'
 })
